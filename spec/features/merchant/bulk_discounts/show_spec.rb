@@ -24,20 +24,16 @@ RSpec.describe 'As a merchant user' do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_user)
   end
 describe 'When I visit /merchant/bulk_discounts'
-  it 'I can see all of my bulk discounts' do
+  it 'I click on a discount and am taken to that discounts show page' do
     visit '/merchant/bulk_discounts'
-
-    expect(page).to have_content("My Bulk Discounts")
-
     within "#discount-#{@discount1.id}" do
-      expect(page).to have_content(@discount1.discount_percentage)
-      expect(page).to have_content(@discount1.item_threshold)
+      click_link "5% discount on 20 items or more"
     end
 
-    within "#discount-#{@discount2.id}" do
-      expect(page).to have_content(@discount2.discount_percentage)
-      expect(page).to have_content(@discount2.item_threshold)
-    end
+    expect(current_path).to eq("/merchant/bulk_discounts/#{@discount1.id}")
+    expect(page).to have_content("Discount Percentage: #{@discount1.discount_percentage}")
+    expect(page).to have_content("Item Threshold: #{@discount1.item_threshold}")
+    expect(page).to have_content("Bulk Discount ID: #{@discount1.id}")
   end
 
 end

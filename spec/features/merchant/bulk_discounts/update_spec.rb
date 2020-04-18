@@ -23,15 +23,23 @@ RSpec.describe 'As a merchant user' do
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_user)
   end
-  describe 'When I visit /merchant/bulk_discounts/:id'
-  it 'I can click a link to edit that bulk discount' do
-    visit "/merchant/bulk_discounts/#{@discount1.id}"
-    click_link 'Edit'
+  describe 'When I visit /merchant/bulk_discounts/:id/edit'
+  it 'I can fill out a form to edit that bulk discount' do
+    visit "/merchant/bulk_discounts/#{@discount1.id}/edit"
 
-    expect(current_path).to eq("/merchant/bulk_discounts/#{@discount1.id}/edit")
-    expect(page).to have_content("Edit Bulk Discount")
-    expect(page).to have_field("Discount percentage")
-    expect(page).to have_field("Item threshold")
+    fill_in 'Discount percentage', with: 35
+    fill_in 'Item threshold', with: 40
+
+    click_button 'Update Bulk discount'
+
+    @discount1.reload
+
+    expect(current_path).to eq('/merchant/bulk_discounts')
+
+    within "#discount-#{@discount1.id}" do
+      expect(page).to have_content(35)
+      expect(page).to have_content(40)
+    end
   end
 
 end

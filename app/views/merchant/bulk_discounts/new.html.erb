@@ -1,11 +1,3 @@
 <h1>New Bulk Discount</h1>
 
-<%= form_for(@discount, url: merchant_bulk_discounts_path)  do |f| %>
-  <%= f.label :discount_percentage %>
-  <%= f.text_field :discount_percentage %>
-
-  <%= f.label :item_threshold %>
-  <%= f.text_field :item_threshold %>
-
-  <%= f.submit %>
-<% end %>
+<%= render partial: 'form', locals: {discount: @discount} %>

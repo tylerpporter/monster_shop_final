@@ -43,4 +43,20 @@ class Cart
   def limit_reached?(item_id)
     count_of(item_id) == Item.find(item_id).inventory
   end
+
+  def applied_discount(item_id)
+    discounts = merchant_discounts(item_id).select {|discount| count_of(item_id) >= discount.item_threshold}
+    discounts.max_by(&:discount_percentage).discount_percentage unless discounts.empty?
+  end
+
+  def item_threshold_met?(item_id)
+    applied_discount(item_id).present?
+  end
+
+  private
+
+  def merchant_discounts(item_id)
+    Item.find(item_id).merchant.bulk_discounts
+  end
+
 end

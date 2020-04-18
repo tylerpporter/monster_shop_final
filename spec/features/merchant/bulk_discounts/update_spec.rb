@@ -35,11 +35,22 @@ RSpec.describe 'As a merchant user' do
     @discount1.reload
 
     expect(current_path).to eq('/merchant/bulk_discounts')
-
+    expect(page).to have_content("Bulk discount with ID: #{@discount1.id} successfully updated")
     within "#discount-#{@discount1.id}" do
       expect(page).to have_content(35)
       expect(page).to have_content(40)
     end
+  end
+  it 'I get an error message if I do not fill out the form completely' do
+    visit "/merchant/bulk_discounts/#{@discount1.id}/edit"
+
+    fill_in 'Discount percentage', with: 40
+    fill_in 'Item threshold', with: ""
+
+    click_button 'Update Bulk discount'
+
+    expect(page).to have_content("item_threshold: [\"can't be blank\"]")
+    expect(page).to have_button('Update Bulk discount')
   end
 
 end

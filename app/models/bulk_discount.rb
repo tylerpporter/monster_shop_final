@@ -4,4 +4,5 @@ class BulkDiscount < ApplicationRecord
   validates_presence_of :discount_percentage,
                         :item_threshold
 
+
 end

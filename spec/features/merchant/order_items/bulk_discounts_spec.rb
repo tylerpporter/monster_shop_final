@@ -7,6 +7,11 @@ RSpec.describe 'As a user' do
                                   city: 'Denver',
                                   state: 'CO',
                                   zip: 80218)
+    @merchant2 = Merchant.create!(name: 'Pups4U',
+                                  address: '123 Main St',
+                                  city: 'Denver',
+                                  state: 'CO',
+                                  zip: 80218)
     @merchant_user = @merchant1.users.create(name: 'Megan',
                                               address: '123 Main St',
                                               city: 'Denver',
@@ -26,6 +31,12 @@ RSpec.describe 'As a user' do
                                       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw',
                                       active: true,
                                       inventory: 100 )
+    @item = @merchant2.items.create!(name: 'Item',
+                                      description: "I'm a Giant!",
+                                      price: 50,
+                                      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw',
+                                      active: true,
+                                      inventory: 100 )
     @ogre = @merchant1.items.create!(name: 'Ogre',
                                      description: "I'm an Ogre!",
                                      price: 20.25,
@@ -33,9 +44,10 @@ RSpec.describe 'As a user' do
                                      active: true,
                                      inventory: 100 )
 
-    @order1 = @merchant_user.orders.create!
-    @order1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 20)
-    @order1.order_items.create!(item: @giant, price: @giant.price, quantity: 15)
+    # @order1 = @merchant_user.orders.create!
+    # @order_item1 = @order1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 20)
+    # @order_item2 = @order1.order_items.create!(item: @giant, price: @giant.price, quantity: 15)
+    # @order_item3 = @order1.order_items.create!(item: @item, price: @item.price, quantity: 20)
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_user)
     visit item_path(@giant)
@@ -62,7 +74,20 @@ RSpec.describe 'As a user' do
       end
     end
     it 'A discount is applied to my corresponding order item' do
+      visit cart_path
+      within "#item-#{@giant.id}" do
+        click_button('More of This!')
+      end
+      click_button 'Check Out'
+      order_item = @merchant1.orders.last.order_items.where(item_id: @giant.id).first
+
+      expect(order_item.price).to eq(47.50)
+
+      order2 = @merchant_user.orders.create!
+
+      order_item2 = order2.order_items.create!(item: @item, price: @item.price, quantity: 20)
       
+      expect(order_item2.price).to eq(50)
     end
   end
 end

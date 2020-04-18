@@ -12,19 +12,8 @@ class User::OrdersController < ApplicationController
   def create
     order = current_user.orders.new
     order.save
-      cart.items.each do |item|
-        order_item = order.order_items.create({
-          item: item,
-          quantity: cart.count_of(item.id),
-          price: item.price
-          })
-        if cart.item_threshold_met?(item.id)
-          order_item.apply_discount(cart.applied_discount(item.id))
-        end
-      end
-    session.delete(:cart)
-    flash[:notice] = "Order created successfully!"
-    redirect_to '/profile/orders'
+    create_order_items(order)
+    success
   end
 
   def cancel
@@ -32,4 +21,34 @@ class User::OrdersController < ApplicationController
     order.cancel
     redirect_to "/profile/orders/#{order.id}"
   end
+
+  private
+
+  def create_single_order_item(order, item)
+    order.order_items.create({
+      item: item,
+      quantity: cart.count_of(item.id),
+      price: item.price
+      })
+  end
+
+  def discount_item(item, order_item)
+    if cart.item_threshold_met?(item.id)
+      order_item.apply_discount(cart.applied_discount(item.id))
+    end
+  end
+
+  def create_order_items(order)
+    cart.items.each do |item|
+      order_item = create_single_order_item(order, item)
+      discount_item(item, order_item)
+    end
+  end
+
+  def success
+    session.delete(:cart)
+    flash[:notice] = "Order created successfully!"
+    redirect_to '/profile/orders'
+  end
+
 end

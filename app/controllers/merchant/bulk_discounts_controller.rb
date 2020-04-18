@@ -12,4 +12,15 @@ class Merchant::BulkDiscountsController < Merchant::BaseController
     @discount = BulkDiscount.new
   end
 
+  def create
+    current_user.merchant.bulk_discounts.create(discount_params)
+    redirect_to merchant_bulk_discounts_path
+  end
+
+  private
+
+  def discount_params
+    params.require(:bulk_discount).permit(:discount_percentage, :item_threshold)
+  end
+
 end

@@ -33,10 +33,9 @@ RSpec.describe 'As a user' do
                                      active: true,
                                      inventory: 100 )
 
-    # @order1 = @merchant_user.orders.create!
-    # @order2 = @merchant_user.orders.create!
-    # @order1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 19)
-    # @order2.order_items.create!(item: @giant, price: @giant.price, quantity: 29)
+    @order1 = @merchant_user.orders.create!
+    @order1.order_items.create!(item: @ogre, price: @ogre.price, quantity: 20)
+    @order1.order_items.create!(item: @giant, price: @giant.price, quantity: 15)
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_user)
     visit item_path(@giant)
@@ -61,6 +60,9 @@ RSpec.describe 'As a user' do
         expect(page).to have_content('Quantity: 20')
         expect(page).to have_content("#{@discount1.discount_percentage}% discount applied to item: #{@giant.name}")
       end
+    end
+    it 'A discount is applied to my corresponding order item' do
+      
     end
   end
 end

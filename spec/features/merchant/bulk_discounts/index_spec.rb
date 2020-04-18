@@ -23,6 +23,16 @@ RSpec.describe 'As a merchant user' do
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_user)
   end
+describe 'Nav bar' do
+  it 'I can click a link that takes me to my bulk discounts index page' do
+    visit '/merchant'
+    within 'nav' do
+      click_link 'My Bulk Discounts'
+    end
+
+    expect(current_path).to eq('/merchant/bulk_discounts')
+  end
+end
 describe 'When I visit /merchant/bulk_discounts'
   it 'I can see all of my bulk discounts' do
     visit '/merchant/bulk_discounts'

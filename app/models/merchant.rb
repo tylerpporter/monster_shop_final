@@ -34,8 +34,15 @@ class Merchant < ApplicationRecord
     order_items.where(order_id: order_id)
   end
 
+  def max_discount(item_quantity)
+    qualifying_discounts(item_quantity).maximum(:discount_percentage)
+  end
+
+  private
+
   def qualifying_discounts(item_quantity)
     bulk_discounts.where("#{item_quantity} >= item_threshold")
   end
+
 
 end

@@ -64,10 +64,10 @@ RSpec.describe Merchant do
       expect(@megan.order_items_by_order(@order_1.id)).to eq([@order_item_1])
     end
 
-    it '.qualifying_discounts()' do
-      expect(@megan.qualifying_discounts(20)).to eq([@discount1])
-      expect(@megan.qualifying_discounts(30)).to eq([@discount1, @discount2])
-      expect(@megan.qualifying_discounts(19)).to eq([])
+    it '.max_discount()' do
+      expect(@megan.max_discount(20)).to eq(5)
+      expect(@megan.max_discount(30)).to eq(10)
+      expect(@megan.max_discount(19)).to eq(nil)
     end
   end
 end

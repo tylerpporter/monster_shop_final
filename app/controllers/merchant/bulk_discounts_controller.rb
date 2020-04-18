@@ -22,7 +22,12 @@ class Merchant::BulkDiscountsController < Merchant::BaseController
   end
 
   def update
-    BulkDiscount.update(params[:id], discount_params)
+    my_discounts.update(params[:id], discount_params)
+    redirect_to merchant_bulk_discounts_path
+  end
+
+  def destroy
+    my_discounts.destroy(params[:id])
     redirect_to merchant_bulk_discounts_path
   end
 

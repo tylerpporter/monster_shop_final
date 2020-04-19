@@ -5,7 +5,7 @@ class OrderItem < ApplicationRecord
   def apply_discount(discount)
     percentage = (discount.to_f / 100)
     reduction = (price * percentage).round(2)
-    update(price: price - reduction)
+    update(price: price - reduction, bulk_discount: discount)
   end
 
   def subtotal

@@ -16,7 +16,9 @@ Merchants can add bulk discount rates for all of their inventory. These apply au
 
 - Fork this repository
 - Clone your fork
-- Run `rails db:{ create, migrate, seed }`
+- Run `rails db:create`
+- Run `rails db:migrate`
+- Run `rails db:seed`
 
 ### Prerequisites
 

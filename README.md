@@ -4,7 +4,13 @@ Adds functionality to the [Turing](turing.io) Mod2 BE [group project](https://gi
 
 Merchants can add bulk discount rates for all of their inventory. These apply automatically in the shopping cart, and adjust the order_items price upon checkout.
 
-[Monster Shop - Bulk Discount](https://tyler-monster-shop-final.herokuapp.com/) Deployed on Heroku 
+## Deployment
+
+* [Monster Shop - Bulk Discount](https://tyler-monster-shop-final.herokuapp.com/) Deployed on Heroku
+  * Merchant user login credentials:
+    * Email: `merchant@example.com`
+    * Password: `password`
+
 
 ## Getting Started
 

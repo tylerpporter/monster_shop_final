@@ -43,4 +43,19 @@ class Cart
   def limit_reached?(item_id)
     count_of(item_id) == Item.find(item_id).inventory
   end
+
+  def applied_discount(item_id)
+    merchant(item_id).max_discount(count_of(item_id))
+  end
+
+  def item_threshold_met?(item_id)
+    applied_discount(item_id).present?
+  end
+
+  private
+
+  def merchant(item_id)
+    Item.find(item_id).merchant
+  end
+
 end

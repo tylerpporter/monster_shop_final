@@ -25,6 +25,7 @@
         <% end %>
       <% end %>
       <%= link_to 'Merchants', '/merchants' %>
+      <%= link_to 'My Bulk Discounts', merchant_bulk_discounts_path if current_merchant_user?%>
       <%= link_to 'Items', '/items' %>
       <%= link_to "Cart: #{cart.count}", cart_path unless current_user && current_admin?%>
     </nav>
